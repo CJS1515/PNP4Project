@@ -7,14 +7,7 @@ export default class ShoppingCart extends Component {
     super(props); //calling super class' constructor
     //initializing the state
     this.state = {
-      products: [
-        { id: 1, productName: "iPhone", price: 8900, quantity: 0 },
-        { id: 2, productName: "Sony Camera", price: 4500, quantity: 0 },
-        { id: 3, productName: "Samsung QLED TV", price: 7745, quantity: 0 },
-        { id: 4, productName: "iPad Pro", price: 12400, quantity: 0 },
-        { id: 5, productName: "Xbox 360", price: 300, quantity: 0 },
-        { id: 6, productName: "MSI Laptop", price: 9999, quantity: 0 },
-      ],
+      products: [],
     };
   }
 
@@ -22,7 +15,7 @@ export default class ShoppingCart extends Component {
     console.log("render - ShoppingCart");
 
     return (
-      <div className="container-fluid">
+      <div>
         <h4>Shopping Cart</h4>
 
         <div className="row">
@@ -45,10 +38,16 @@ export default class ShoppingCart extends Component {
   }
   //render ends here
 
-  componentDidMount() {
+  componentDidMount = async () => {
     //fetch data from data source
-    console.log("componentDidMount - ShoppingCart");
-  }
+
+    var response = await fetch("http://localhost:5000/products", {
+      method: "GET",
+    });
+    var prods = await response.json();
+    this.setState({ products: prods });
+    //console.log("componentDidMount - ShoppingCart");
+  };
 
   componentDidUpdate(prevProps, prevState) {
     console.log(
