@@ -7,7 +7,7 @@ export default class Login extends Component {
   }
   render() {
     return (
-      <div className="col-lg-9">
+      <div>
         <h4 className="m-1 p-2 border-bottom">Login</h4>
         {/* Email Starts */}
         <div className="form-group form-row">
@@ -37,7 +37,8 @@ export default class Login extends Component {
         </div>
         {/* Password ends */}
         <div className="text-right">
-          <button className="btn btn-primary" onClick={this.onLoginClick}>
+          {this.state.message}
+          <button className="btn btn-primary m-1" onClick={this.onLoginClick}>
             Login
           </button>
         </div>
@@ -45,16 +46,20 @@ export default class Login extends Component {
     );
   } //end of render
 
-  onLoginClick = () => {
-    if (
-      this.state.email === "admin@test.com" &&
-      this.state.password === "admin123"
-    ) {
+  onLoginClick = async () => {
+    var response = await fetch(
+      `http://localhost:5000/users?email=${this.state.email}&password=${this.state.password}`,
+      { method: "GET" }
+    );
+
+    var body = await response.json();
+
+    if (body.length > 0)
       //success
       this.setState({
         message: <span className="text-success">Successfully Logged-in</span>,
       });
-    } else {
+    else {
       //error
       this.setState({
         message: (
